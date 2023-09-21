@@ -1,6 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace NailDown.Shared.Model {
+    public enum JobStatus {
+        Todo,
+        Doing,
+        Done
+    }
+
     public class JobModel {
         [Key]
         public uint Id { get; set; }
