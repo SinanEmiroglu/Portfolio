@@ -14,8 +14,21 @@ namespace NailDown.Shared.Model {
         public string Title { get; set; } = "";
         public string? Description { get; set; }
         [Required]
-        public DateTime CreatedDate { get; set; }
+        public JobStatus Status { get; set; } = JobStatus.Todo;
         [Required]
-        public TimeSpan RelativeTime { get => DateTime.Now - CreatedDate; }
+        public DateTime LastEditDate { get; set; }
+        [Required]
+        public TimeSpan RelativeTime { get => DateTime.Now - LastEditDate; }
+
+        public static JobModel GetDefault() {
+            JobModel model = new JobModel();
+            model.Id = 0;
+            model.Title = "Default";
+            model.Description = null;
+            model.Status = JobStatus.Todo;
+            model.LastEditDate = DateTime.Now;
+
+            return model;
+        }
     }
 }
