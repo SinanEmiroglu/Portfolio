@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NailDown.Server.Data;
+using NailDown.Server.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<AppDBContext>(opt => {
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddScoped<IJob, Job>();
 
 var app = builder.Build();
 
