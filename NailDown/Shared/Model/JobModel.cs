@@ -17,7 +17,6 @@ namespace NailDown.Shared.Model {
         public JobStatus Status { get; set; } = JobStatus.Todo;
         [Required]
         public DateTime LastEditDate { get; set; }
-        [Required]
         public TimeSpan RelativeTime { get => DateTime.Now - LastEditDate; }
 
         public static JobModel GetDefault() {
