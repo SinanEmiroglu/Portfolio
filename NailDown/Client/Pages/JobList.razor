@@ -35,7 +35,7 @@
 
 <div class="col-md-4">
     <div class="form-group">
-        <input type="button" class="btn btn-primary" onclick="CreateNewJob" value="Create New Job"/>
+        <input type="button" class="btn btn-primary" @onclick="@CreateNewJob" value="Create New Job" />
     </div>
 </div>
 
@@ -47,9 +47,11 @@
         response.EnsureSuccessStatusCode();
 
         jobs = await response.Content.ReadFromJsonAsync<List<JobModel>>() ?? new List<JobModel>();
+
+        base.OnInitialized();
     }
 
     private void CreateNewJob() {
-        _navigation.NavigateTo("CreateJob");
+        _navigation.NavigateTo("job/create");
     }
 }

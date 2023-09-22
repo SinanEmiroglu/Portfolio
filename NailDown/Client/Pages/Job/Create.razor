@@ -1,0 +1,46 @@
+﻿@page "/job/create"
+@using NailDown.Shared.Model;
+@inject HttpClient _client
+@inject NavigationManager _navigation
+@inject IJSRuntime _jsRuntime
+
+<h3>Create New Job</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="Title">Title *</label>
+            <input form="Title" class="form-control" @bind="@job.Title" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="Description">Description *</label>
+            <input form="Description" class="form-control" @bind="@job.Description" />
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="form-group">
+        <input type="button" class="btn btn-primary" @onclick="@CreateJob" value="Create" />
+        <input type="button" class="btn btn-secondary" @onclick="@Cancel" value="Cancel" />
+    </div>
+</div>
+
+@code {
+    private JobModel job = new JobModel();
+
+    private async Task CreateJob() {
+        job.LastEditDate = DateTime.Now;
+        job.Status = JobStatus.Todo;
+
+        var response = await _client.PostAsJsonAsync("api/job/Create", job);
+
+        _navigation.NavigateTo("jobs");
+    }
+
+    private void Cancel() {
+        _navigation.NavigateTo("jobs");
+    }
+}
