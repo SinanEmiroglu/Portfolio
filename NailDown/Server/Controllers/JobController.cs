@@ -6,28 +6,28 @@ namespace NailDown.Server.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class JobController : ControllerBase {
-        private readonly IJob _job;
+        private IJob _job;
 
         public JobController(IJob job) {
             _job = job;
         }
 
-        [HttpGet("job/create")]
-        public async Task<JobModel> CreateJob(JobModel job) {
+        [HttpPost("create")]
+        public async Task<bool> CreateJob(JobModel job) {
             return await _job.Create(job);
         }
 
-        [HttpGet("job/edit/{id}")]
+        [HttpGet("edit/{id}")]
         public async Task<bool> EditJob(uint id, JobModel job) {
             return await _job.Edit(id, job);
         }
 
-        [HttpPut("job/delete/{id}")]
+        [HttpPut("delete/{id}")]
         public async Task<bool> DeleteJob(uint id) {
             return await _job.Delete(id);
         }
 
-        [HttpGet("job/{id}")]
+        [HttpGet("{id}")]
         public async Task<JobModel> GetJob(uint id) {
             return await _job.GetJob(id);
         }

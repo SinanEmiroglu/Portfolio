@@ -12,15 +12,14 @@ namespace NailDown.Server.Repository {
         }
 
         [HttpPost(nameof(Create))]
-        public async Task<JobModel> Create(JobModel job) {
-            job.Status = JobStatus.Todo;
-            job.LastEditDate = DateTime.Now;
-
+        public async Task<bool> Create(JobModel job) {
             var model = await _context.Jobs.AddAsync(job);
+            _context.SaveChanges();
 
-            return model.Entity;
+            return model.State == EntityState.Added;
         }
 
+        [HttpPut(nameof(Edit))]
         public async Task<bool> Edit(uint id, JobModel job) {
             var result = await _context.Jobs.FindAsync(id);
 
