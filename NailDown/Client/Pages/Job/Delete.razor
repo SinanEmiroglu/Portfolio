@@ -1,0 +1,54 @@
+﻿@page "/job/delete/{Id:int}"
+@using NailDown.Shared.Model;
+@inject HttpClient _client
+@inject NavigationManager _navigation
+@inject IJSRuntime _jsRuntime
+
+<h3>Delete Job</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="Title">Title *</label>
+            <input readonly form="Title" class="form-control" @bind="job.Title" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="Description">Description *</label>
+            <input readonly form="Description" class="form-control" @bind="job.Description" />
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="form-group">
+        <input type="button" class="btn btn-primary" @onclick="@DeleteJob" value="Delete" />
+        <input type="button" class="btn btn-secondary" @onclick="@Cancel" value="Cancel" />
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private JobModel? job = new JobModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        job = await _client.GetFromJsonAsync<JobModel>($"api/job/{Id}");
+    }
+
+    private async Task DeleteJob()
+    {
+        var response = await _client.DeleteAsync($"api/job/delete/{Id}");
+        bool success = await response.Content.ReadFromJsonAsync<bool>();
+
+        _navigation.NavigateTo("jobs");
+    }
+
+    private void Cancel()
+    {
+        _navigation.NavigateTo("jobs");
+    }
+}
