@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NailDown.Server.Data;
 using NailDown.Shared.Model;
 
@@ -11,25 +10,22 @@ namespace NailDown.Server.Repository {
             _context = context;
         }
 
-        [HttpPost(nameof(Create))]
         public async Task<bool> Create(JobModel job) {
-            var model = await _context.Jobs.AddAsync(job);
+            var entity = await _context.Jobs.AddAsync(job);
             _context.SaveChanges();
 
-            return model.State == EntityState.Added;
+            return entity.State == EntityState.Added;
         }
 
-        [HttpPut(nameof(Edit))]
         public async Task<bool> Edit(uint id, JobModel job) {
-            var result = await _context.Jobs.FindAsync(id);
+            var entity = await _context.Jobs.FindAsync(id);
 
-            if (result != null) {
-                result.Title = job.Title;
-                result.Description = job.Description;
-                result.Status = job.Status;
-                result.LastEditDate = DateTime.Now;
+            if (entity != null) {
+                entity.Title = job.Title;
+                entity.Description = job.Description;
+                entity.Status = job.Status;
+                entity.LastEditDate = DateTime.Now;
 
-                _context.Entry(result).State = EntityState.Modified;
                 _context.SaveChanges();
 
                 return true;
@@ -39,12 +35,11 @@ namespace NailDown.Server.Repository {
             }
         }
 
-        [HttpPut(nameof(Delete))]
         public async Task<bool> Delete(uint id) {
-            var result = await _context.Jobs.FindAsync(id);
+            var entity = await _context.Jobs.FindAsync(id);
 
-            if (result != null) {
-                _context.Jobs.Remove(result);
+            if (entity != null) {
+                _context.Jobs.Remove(entity);
                 _context.SaveChanges();
 
                 return true;
@@ -54,14 +49,14 @@ namespace NailDown.Server.Repository {
             }
         }
 
-        [HttpGet(nameof(GetJob))]
         public async Task<JobModel> GetJob(uint id) {
             return await _context.Jobs.FirstOrDefaultAsync(j => j.Id == id) ?? JobModel.GetDefault();
         }
 
-        [HttpGet]
-        public async Task<List<JobModel>> GetJobs() {
-            return await _context.Jobs.ToListAsync();
+        public async IAsyncEnumerable<JobModel> GetJobs() {
+            await foreach (var job in _context.Jobs.AsAsyncEnumerable()) {
+                yield return job;
+            }
         }
     }
 }

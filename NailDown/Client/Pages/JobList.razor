@@ -24,8 +24,8 @@
                     <td>@job.Status</td>
                     <td>@job.RelativeTime</td>
                     <td>
-                        <a href="/job/edit/@job.Id">Edit</a>
-                        <a href="/job/delete/@job.Id">Delete</a>
+                        <input type="button" class="btn btn-primary" @onclick="()=>Editjob(job.Id)" value="Edit" />
+                        <input type="button" class="btn btn-secondary" @onclick="()=>Deletejob(job.Id)" value="Delete" />
                     </td>
                 </tr>
             }
@@ -43,15 +43,27 @@
     private List<JobModel> jobs = new List<JobModel>();
 
     protected override async Task OnInitializedAsync() {
-        var response = await _client.GetAsync("api/job");
-        response.EnsureSuccessStatusCode();
+        var result = await _client.GetAsync("api/job");
+        result.EnsureSuccessStatusCode();
 
-        jobs = await response.Content.ReadFromJsonAsync<List<JobModel>>() ?? new List<JobModel>();
+        var response = await result.Content.ReadFromJsonAsync<IAsyncEnumerable<JobModel>>();
 
-        base.OnInitialized();
+        if (response != null) {
+            await foreach (var item in response) {
+                jobs.Add(item);
+            }
+        }
     }
 
     private void CreateNewJob() {
         _navigation.NavigateTo("job/create");
+    }
+
+    private void Editjob(uint id) {
+        _navigation.NavigateTo($"job/edit/{id}");
+    }
+
+    private void Deletejob(uint id) {
+        _navigation.NavigateTo($"job/delete/{id}");
     }
 }

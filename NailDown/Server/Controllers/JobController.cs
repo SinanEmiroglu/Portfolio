@@ -17,12 +17,12 @@ namespace NailDown.Server.Controllers {
             return await _job.Create(job);
         }
 
-        [HttpGet("edit/{id}")]
+        [HttpPut("edit/{id}")]
         public async Task<bool> EditJob(uint id, JobModel job) {
             return await _job.Edit(id, job);
         }
 
-        [HttpPut("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<bool> DeleteJob(uint id) {
             return await _job.Delete(id);
         }
@@ -33,8 +33,10 @@ namespace NailDown.Server.Controllers {
         }
 
         [HttpGet]
-        public async Task<List<JobModel>> GetJobs() {
-            return await _job.GetJobs();
+        public async IAsyncEnumerable<JobModel> GetJobs() {
+            await foreach (var item in _job.GetJobs()) {
+                yield return item;
+            }
         }
     }
 }

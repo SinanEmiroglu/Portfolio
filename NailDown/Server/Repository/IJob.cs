@@ -6,6 +6,6 @@ namespace NailDown.Server.Repository {
         public Task<bool> Edit(uint id, JobModel job);
         public Task<bool> Delete(uint id);
         public Task<JobModel> GetJob(uint id);
-        public Task<List<JobModel>> GetJobs();
+        public IAsyncEnumerable<JobModel> GetJobs();
     }
 }
