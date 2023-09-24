@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NailDown.Server", "NailDown\Server\NailDown.Server.csproj", "{2F3496A0-317A-44AA-A753-BD16BD222E6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NailDown.Server", "NailDown\Server\NailDown.Server.csproj", "{2F3496A0-317A-44AA-A753-BD16BD222E6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NailDown.Client", "NailDown\Client\NailDown.Client.csproj", "{389583DB-75D6-4CD6-AFF5-2EA1FDEB8AF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NailDown.Client", "NailDown\Client\NailDown.Client.csproj", "{389583DB-75D6-4CD6-AFF5-2EA1FDEB8AF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NailDown.Shared", "NailDown\Shared\NailDown.Shared.csproj", "{DE2E7B55-8B3D-43F4-9C9B-2D02E1BD56DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NailDown.Shared", "NailDown\Shared\NailDown.Shared.csproj", "{DE2E7B55-8B3D-43F4-9C9B-2D02E1BD56DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,3 +1,49 @@
 ﻿@page "/"
+@inject HttpClient _client
+@inject NavigationManager _navigation
 
-<h1>INDEX</h1>
+<JobContainer Jobs="@jobs" OnStatusUpdated="HandleStatusUpdated">
+    <JobList ContainerStatus="JobStatus.Todo" StatusList="@StatusList" />
+    <JobList ContainerStatus="JobStatus.Doing" StatusList="@StatusList" />
+    <JobList ContainerStatus="JobStatus.Done" StatusList="@StatusList" />
+</JobContainer>
+
+<div class="col-md-4">
+    <div class="form-group">
+        <input type="button" class="btn btn-primary" @onclick="@CreateNewJob" value="Create New Job" />
+    </div>
+</div>
+
+@code {
+    private List<JobModel> jobs = new List<JobModel>();
+    private JobStatus[] StatusList = new JobStatus[3] { JobStatus.Todo, JobStatus.Doing, JobStatus.Done };
+
+    private void HandleStatusUpdated(JobModel updatedJob) {
+        // lastUpdatedJob = updatedJob.Description;
+    }
+
+    protected override async Task OnInitializedAsync() {
+        var result = await _client.GetAsync("api/job");
+        result.EnsureSuccessStatusCode();
+
+        var response = await result.Content.ReadFromJsonAsync<IAsyncEnumerable<JobModel>>();
+
+        if (response != null) {
+            await foreach (var item in response) {
+                jobs.Add(item);
+            }
+        }
+    }
+
+    private void CreateNewJob() {
+        _navigation.NavigateTo("job/create");
+    }
+
+    private void Editjob(uint id) {
+        _navigation.NavigateTo($"job/edit/{id}");
+    }
+
+    private void Deletejob(uint id) {
+        _navigation.NavigateTo($"job/delete/{id}");
+    }
+}
