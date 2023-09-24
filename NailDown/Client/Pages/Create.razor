@@ -38,10 +38,10 @@
         var response = await _client.PostAsJsonAsync("api/job/create", job);
         bool success = await response.Content.ReadFromJsonAsync<bool>();
 
-        _navigation.NavigateTo("jobs");
+        _navigation.NavigateTo("/");
     }
 
     private void Cancel() {
-        _navigation.NavigateTo("jobs");
+        _navigation.NavigateTo("/");
     }
 }

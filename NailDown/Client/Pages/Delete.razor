@@ -44,11 +44,11 @@
         var response = await _client.DeleteAsync($"api/job/delete/{Id}");
         bool success = await response.Content.ReadFromJsonAsync<bool>();
 
-        _navigation.NavigateTo("jobs");
+        _navigation.NavigateTo("/");
     }
 
     private void Cancel()
     {
-        _navigation.NavigateTo("jobs");
+        _navigation.NavigateTo("/");
     }
 }
